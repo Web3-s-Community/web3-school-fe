@@ -1,0 +1,12 @@
+.PageLayout_main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: fixed;
+  top: var(--top-nav-height);
+  height: calc(100vh - var(--top-nav-height));
+  overflow-y: auto;
+  width: 100%;
+  background-color: var(--bg);
+  color: var(--color);
+}

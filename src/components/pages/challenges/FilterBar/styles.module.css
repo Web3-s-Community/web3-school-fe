@@ -1,0 +1,35 @@
+.Tag_default {
+  color: var(--color-1);
+  background-color: var(--tag-color);
+  border: 1px solid var(--border-color);
+}
+
+.Tag_solidity {
+  color: #fff;
+  background-color: #aa6746;
+}
+
+.Tag_vyper {
+  color: #fff;
+  background-color: #ae12e2;
+}
+
+.Tag_easy {
+  color: #fff;
+  background-color: #28a745;
+}
+
+.Tag_medium {
+  color: #212529;
+  background-color: #ffc107;
+}
+
+.Tag_hard {
+  color: #fff;
+  background-color: #dc3545;
+}
+
+.Tag_free {
+  color: #212529;
+  background-color: #78db6e;
+}
