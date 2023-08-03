@@ -1,0 +1,9 @@
+._slug__content {
+  display: flex;
+  flex-direction: row;
+  height: calc(100vh - var(--top-nav-height) - var(--footer-height));
+  margin-top: var(--top-nav-height);
+  padding: 12px;
+  background-color: var(--bg-dark);
+  color: var(--color-1);
+}

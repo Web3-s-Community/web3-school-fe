@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 interface Props {}
 const list: ChallengeItemProps[] = [
   {
-    isCompleted: true,
+    status: "passed",
     title: "Hello World",
     hasVideo: true,
     language: "solidity",
@@ -16,7 +16,7 @@ const list: ChallengeItemProps[] = [
     isFree: true,
   },
   {
-    isCompleted: false,
+    status: "not passed",
     title: "Value Types",
     hasVideo: true,
     language: "vyper",
@@ -26,7 +26,7 @@ const list: ChallengeItemProps[] = [
     isFree: false,
   },
   {
-    isCompleted: false,
+    status: "",
     title: "Function",
     hasVideo: false,
     language: "vyper",
@@ -45,14 +45,17 @@ const ChallengeList: React.FC<PropsWithChildren<Props>> = ({}) => {
       const status = searchParams.get("status");
       const language = searchParams.get("language");
       const difficulty = searchParams.get("difficulty");
+
       const matchTitle =
         !title || row.title.toLowerCase().includes(title.toLowerCase());
-      const matchStatus = !status || row.isCompleted === (status === "passed");
+      const matchStatus = !status || row.status === status;
       const matchLanguage = !language || row.language === language;
       const matchDifficulty = !difficulty || row.difficulty === difficulty;
+
       return matchTitle && matchStatus && matchLanguage && matchDifficulty;
     });
   }, [searchParams]);
+
   return (
     <>
       <div className="mx-auto mt-1 flex max-h-[60vh] w-full max-w-[90vw] flex-col overflow-x-auto overflow-y-auto rounded-sm md:max-w-screen-lg">

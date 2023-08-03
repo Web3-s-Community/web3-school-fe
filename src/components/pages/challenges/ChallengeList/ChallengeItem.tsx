@@ -2,7 +2,7 @@ import Link from "next/link";
 import { PropsWithChildren } from "react";
 import Tag from "../FilterBar/Tag";
 export interface ChallengeItemProps {
-  isCompleted: boolean;
+  status: "passed" | "not passed" | "";
   title: string;
   hasVideo: boolean;
   language: string;
@@ -13,8 +13,8 @@ export interface ChallengeItemProps {
 }
 
 const ChallengeItem: React.FC<PropsWithChildren<ChallengeItemProps>> = ({
-  isCompleted,
   title,
+  status,
   hasVideo,
   language,
   difficulty,
@@ -22,6 +22,12 @@ const ChallengeItem: React.FC<PropsWithChildren<ChallengeItemProps>> = ({
   categories,
   isFree,
 }) => {
+  const statusColor = {
+    passed: "var(--green)",
+    "not passed": "var(--red)",
+    "": "var(--color-1)",
+  }[status];
+
   return (
     <>
       <tr className="border-t odd:bg-gray-100 dark:border-zinc-800 dark:odd:bg-zinc-900">
@@ -32,9 +38,9 @@ const ChallengeItem: React.FC<PropsWithChildren<ChallengeItemProps>> = ({
             width="18"
             height="18"
             className="mx-auto"
-            fill={isCompleted ? "var(--green)" : "var(--color-1)"}
+            fill={statusColor}
           >
-            {isCompleted ? (
+            {["passed", "not passed"].includes(status) ? (
               <circle cx="8" cy="8" r="8"></circle>
             ) : (
               <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
@@ -45,7 +51,7 @@ const ChallengeItem: React.FC<PropsWithChildren<ChallengeItemProps>> = ({
           <Link href={href}>
             <span
               className={`${
-                isCompleted ? "line-through" : ""
+                status === "passed" ? "line-through" : ""
               } cursor-pointer whitespace-nowrap font-semibold text-[color:var(--strike-color)] transition duration-200 ease-in-out hover:text-[color:var(--hover-strike-color)]`}
             >
               {title}

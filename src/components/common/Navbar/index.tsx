@@ -54,7 +54,7 @@ export default Navbar;
 const Logo = () => {
   return (
     <Link className="link-white flex items-center" href="/">
-      <Image src="./svgs/logo.svg" width={40} height={40} alt="logo" />
+      <Image src="/svgs/logo.svg" width={40} height={40} alt="logo" />
       <span className="font-bold">Smart Contract Engineer</span>
     </Link>
   );
