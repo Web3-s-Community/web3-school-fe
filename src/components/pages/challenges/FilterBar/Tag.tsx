@@ -2,20 +2,20 @@ import { PropsWithChildren, useMemo } from "react";
 import styles from "./styles.module.css";
 
 interface TagProps {
-  type: "status" | "language" | "difficulty" | "free";
   displayName: string;
   onClick?: () => void;
 }
 
+const specialTags = ["solidity", "vyper", "free", "easy", "medium", "hard"];
+
 const Tag: React.FC<PropsWithChildren<TagProps>> = ({
-  type,
   displayName,
   onClick,
 }) => {
   const tagClass = useMemo(() => {
-    if (type === "status") return styles.Tag_default;
-    else return styles[`Tag_${displayName}`];
-  }, [type, displayName]);
+    if (specialTags.includes(displayName)) return styles[`Tag_${displayName}`];
+    else return styles.Tag_default;
+  }, [displayName]);
 
   return (
     <>
@@ -23,6 +23,9 @@ const Tag: React.FC<PropsWithChildren<TagProps>> = ({
         <button
           className={`flex flex-row items-center whitespace-nowrap rounded-lg py-1 px-2 text-center text-sm font-semibold leading-none ${tagClass}`}
           onClick={onClick}
+          style={{
+            cursor: onClick ? "pointer" : "default",
+          }}
         >
           <span>{displayName}</span>
           {!!onClick && (

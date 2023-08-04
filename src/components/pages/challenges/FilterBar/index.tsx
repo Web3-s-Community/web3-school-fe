@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { PropsWithChildren, useEffect, useRef, useState } from "react";
 import Select from "./Select";
@@ -24,11 +26,12 @@ const FilterBar: React.FC<PropsWithChildren<Props>> = ({}) => {
   useEffect(() => {
     setParams({
       q: searchParams.get("q") ?? "",
-      sort: "",
+      sort: searchParams.get("sort") ?? "",
       status: searchParams.get("status") ?? "",
       language: searchParams.get("language") ?? "",
       difficulty: searchParams.get("difficulty") ?? "",
     });
+    setSearchWord(searchParams.get("q") ?? "");
   }, []);
 
   useEffect(() => {
@@ -103,7 +106,7 @@ const FilterBar: React.FC<PropsWithChildren<Props>> = ({}) => {
             options={[
               { displayName: "Status", value: "" },
               { displayName: "passed", value: "passed" },
-              { displayName: "not passed", value: "not passed" },
+              { displayName: "failed", value: "failed" },
             ]}
             value={params.status}
             onChange={(value) =>
@@ -150,21 +153,18 @@ const FilterBar: React.FC<PropsWithChildren<Props>> = ({}) => {
         <div className="flex flex-row flex-wrap py-2">
           {!!params.status && (
             <Tag
-              type="status"
               displayName={params.status}
               onClick={() => setParams((prev) => ({ ...prev, status: "" }))}
             />
           )}
           {!!params.language && (
             <Tag
-              type="language"
               displayName={params.language}
               onClick={() => setParams((prev) => ({ ...prev, language: "" }))}
             />
           )}
           {!!params.difficulty && (
             <Tag
-              type="difficulty"
               displayName={params.difficulty}
               onClick={() => setParams((prev) => ({ ...prev, difficulty: "" }))}
             />

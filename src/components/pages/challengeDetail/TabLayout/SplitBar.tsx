@@ -8,19 +8,20 @@ const SplitBar: React.FC<PropsWithChildren<Props>> = ({
   onMouseDown,
   ...props
 }) => {
-  const thicknessClass = `${mode === "horizontal" ? "w" : "h"}-[14px]`;
   return (
     <>
       <div
         {...props}
         className={
           props.className +
-          ` !shadow-none !bg-transparent !${thicknessClass} after:!hidden before:!hidden`
+          ` !shadow-none !bg-transparent ${
+            mode === "horizontal" ? "!w-[14px]" : "!h-[14px]"
+          } after:!hidden before:!hidden`
         }
       >
         <div
           onMouseDown={onMouseDown}
-          className="shadow-none bg-transparent hover:bg-[var(--hover-split-bg-color)] transition"
+          className="h-full w-full shadow-none bg-transparent hover:bg-[var(--hover-split-bg-color)] transition"
         />
       </div>
     </>

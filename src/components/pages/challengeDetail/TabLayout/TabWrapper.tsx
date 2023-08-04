@@ -10,7 +10,7 @@ const TabWrapper: React.FC<PropsWithChildren<Props>> = ({
   return (
     <>
       <div
-        className="flex h-full flex-col rounded-lg border border-[color:var(--border-color)] bg-[color:var(--bg-1)]"
+        className="flex h-full flex-col rounded-lg border border-[color:var(--border-color)] bg-[color:var(--bg-1)] overflow-x-hidden"
         style={style}
       >
         {children}

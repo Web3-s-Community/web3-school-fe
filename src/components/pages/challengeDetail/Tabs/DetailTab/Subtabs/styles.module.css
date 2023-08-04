@@ -1,0 +1,10 @@
+.Videos_video {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+  border-radius: 6px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}

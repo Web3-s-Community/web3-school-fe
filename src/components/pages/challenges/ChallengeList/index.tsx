@@ -1,46 +1,17 @@
 "use client";
 
 import { PropsWithChildren, useEffect, useMemo, useState } from "react";
-import ChallengeItem, { ChallengeItemProps } from "./ChallengeItem";
+import ChallengeItem, { IChallengeItem } from "./ChallengeItem";
 import { useSearchParams } from "next/navigation";
-interface Props {}
-const list: ChallengeItemProps[] = [
-  {
-    status: "passed",
-    title: "Hello World",
-    hasVideo: true,
-    language: "solidity",
-    difficulty: "easy",
-    href: "/challenges/1",
-    categories: ["app"],
-    isFree: true,
-  },
-  {
-    status: "not passed",
-    title: "Value Types",
-    hasVideo: true,
-    language: "vyper",
-    difficulty: "medium",
-    href: "/challenges/2",
-    categories: ["defi", "curve", "mainnet"],
-    isFree: false,
-  },
-  {
-    status: "",
-    title: "Function",
-    hasVideo: false,
-    language: "vyper",
-    difficulty: "hard",
-    href: "/challenges/3",
-    categories: ["defi", "curve", "mainnet"],
-    isFree: false,
-  },
-];
-const ChallengeList: React.FC<PropsWithChildren<Props>> = ({}) => {
+interface Props {
+  list: IChallengeItem[];
+}
+
+const ChallengeList: React.FC<PropsWithChildren<Props>> = ({ list }) => {
   const searchParams = useSearchParams();
 
   const filteredList = useMemo(() => {
-    return list.filter((row) => {
+    const result = list.filter((row) => {
       const title = searchParams.get("q");
       const status = searchParams.get("status");
       const language = searchParams.get("language");
@@ -48,12 +19,19 @@ const ChallengeList: React.FC<PropsWithChildren<Props>> = ({}) => {
 
       const matchTitle =
         !title || row.title.toLowerCase().includes(title.toLowerCase());
-      const matchStatus = !status || row.status === status;
+      const matchStatus = !status || row.code?.status === status;
       const matchLanguage = !language || row.language === language;
       const matchDifficulty = !difficulty || row.difficulty === difficulty;
 
       return matchTitle && matchStatus && matchLanguage && matchDifficulty;
     });
+
+    const sort = searchParams.get("sort");
+    if (sort) {
+      if (sort === "newest") result.sort((a, b) => a.sort - b.sort);
+      else result.sort((a, b) => b.sort - a.sort);
+    }
+    return result;
   }, [searchParams]);
 
   return (

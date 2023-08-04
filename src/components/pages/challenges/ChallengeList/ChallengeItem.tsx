@@ -1,30 +1,33 @@
 import Link from "next/link";
 import { PropsWithChildren } from "react";
 import Tag from "../FilterBar/Tag";
-export interface ChallengeItemProps {
-  status: "passed" | "not passed" | "";
-  title: string;
-  hasVideo: boolean;
+export interface IChallengeItem {
+  id: string;
+  slug: string;
   language: string;
+  title: string;
   difficulty: string;
-  href: string;
-  categories: string[];
-  isFree: boolean;
+  free: boolean;
+  videos: { url: string; title: string }[];
+  tags: string[];
+  sort: number;
+  code: { status: string } | null;
 }
 
-const ChallengeItem: React.FC<PropsWithChildren<ChallengeItemProps>> = ({
+const ChallengeItem: React.FC<PropsWithChildren<IChallengeItem>> = ({
   title,
-  status,
-  hasVideo,
+  code,
+  videos,
   language,
   difficulty,
-  href,
-  categories,
-  isFree,
+  tags,
+  free,
+  slug,
 }) => {
+  const status = code?.status ? code.status : "";
   const statusColor = {
     passed: "var(--green)",
-    "not passed": "var(--red)",
+    failed: "var(--red)",
     "": "var(--color-1)",
   }[status];
 
@@ -40,7 +43,7 @@ const ChallengeItem: React.FC<PropsWithChildren<ChallengeItemProps>> = ({
             className="mx-auto"
             fill={statusColor}
           >
-            {["passed", "not passed"].includes(status) ? (
+            {["passed", "failed"].includes(status) ? (
               <circle cx="8" cy="8" r="8"></circle>
             ) : (
               <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
@@ -48,7 +51,7 @@ const ChallengeItem: React.FC<PropsWithChildren<ChallengeItemProps>> = ({
           </svg>
         </td>
         <td className="pr-2">
-          <Link href={href}>
+          <Link href={`challenges/${slug}`}>
             <span
               className={`${
                 status === "passed" ? "line-through" : ""
@@ -60,7 +63,7 @@ const ChallengeItem: React.FC<PropsWithChildren<ChallengeItemProps>> = ({
         </td>
         <td className="w-[40px] px-2">
           <div className="flex flex-row items-center justify-center">
-            {hasVideo && (
+            {videos.length > 0 && (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 xmlSpace="preserve"
@@ -86,25 +89,25 @@ const ChallengeItem: React.FC<PropsWithChildren<ChallengeItemProps>> = ({
         </td>
         <td className="w-[80px]">
           <div className="flex flex-row items-center justify-center">
-            <Tag type="language" displayName={language} />
+            <Tag displayName={language} />
           </div>
         </td>
         <td className="w-[100px] px-2">
           <div className="flex flex-row items-center justify-center">
-            <Tag type="difficulty" displayName={difficulty} />
+            <Tag displayName={difficulty} />
           </div>
         </td>
         <td>
           <div className="flex flex-row items-center justify-end">
-            {categories.map((cate, index) => (
-              <Tag key={index} type="status" displayName={cate} />
+            {tags.map((cate, index) => (
+              <Tag key={index} displayName={cate} />
             ))}
           </div>
         </td>
         <td className="w-[60px] px-2">
           <div className="flex flex-row items-center justify-center">
-            {isFree ? (
-              <Tag type="free" displayName="free" />
+            {free ? (
+              <Tag displayName="free" />
             ) : (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
