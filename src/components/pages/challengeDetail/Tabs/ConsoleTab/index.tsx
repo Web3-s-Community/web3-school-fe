@@ -5,34 +5,35 @@ import styles from "./styles.module.css";
 import { socket } from "@/socket";
 import { useSocketProvider } from "@/hooks/useSocketProvider";
 import Loading from "./Loading";
+import Convert from "ansi-to-html";
 interface Props {}
 
 const ConsoleTab: React.FC<PropsWithChildren<Props>> = ({}) => {
   const { isLoading, setIsLoading } = useSocketProvider();
-  const [error, setError] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const [errorType, setErrorType] = useState("");
-  const [succeed, setSucceed] = useState("");
+  const [succeedMsg, setSucceedMsg] = useState([]);
   const [succeedType, setSucceedType] = useState("");
 
   useEffect(() => {
     socket.on("format", onFormat);
     socket.on("compile", onCompile);
+    socket.on("run", onRun);
 
     return () => {
       socket.off("format", onFormat);
       socket.off("compile", onCompile);
+      socket.off("run", onRun);
     };
   }, []);
 
   const onGetError = (info: any) => {
     let err = info.errors.map((error: any) => error.message).join("");
-    console.log({ err });
-    setError(err);
+    setErrorMsg(err);
   };
 
   const onGetSucceed = (info: any) => {
-    console.log({ info });
-    setSucceed(info);
+    setSucceedMsg(info);
   };
 
   const onFormat = (data: any[]) => {
@@ -63,10 +64,24 @@ const ConsoleTab: React.FC<PropsWithChildren<Props>> = ({}) => {
     }
   };
 
+  const onRun = (data: any[]) => {
+    const response = data[1];
+    if (response.jobId !== localStorage.getItem("jobId")) return;
+    setIsLoading(false);
+    reset();
+    if (response.status === "failed") {
+      setErrorType("compile");
+      onGetError(response.error);
+    } else if (response.status === "passed") {
+      onGetSucceed(response.output);
+      setSucceedType("run");
+    }
+  };
+
   const reset = () => {
-    setError("");
+    setErrorMsg("");
     setErrorType("");
-    setSucceed("");
+    setSucceedMsg([]);
     setSucceedType("");
   };
 
@@ -111,7 +126,7 @@ const ConsoleTab: React.FC<PropsWithChildren<Props>> = ({}) => {
                 <div className={styles.Logs_error}>Failed to compile 💀</div>
               </div>
               <div className={styles.Logs_line + " " + styles.Logs_errorBg}>
-                <div>{error}</div>
+                <div>{errorMsg}</div>
               </div>
             </>
           )}
@@ -119,6 +134,23 @@ const ConsoleTab: React.FC<PropsWithChildren<Props>> = ({}) => {
             <div className={styles.Logs_line}>
               <div className={styles.Logs_passed}>Compiled 🔥</div>
             </div>
+          )}
+          {!isLoading && succeedType === "run" && (
+            <>
+              {succeedMsg.map((msg, index) => (
+                <div key={index} className={styles.Logs_line}>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: new Convert().toHtml(msg),
+                    }}
+                  ></div>
+                </div>
+              ))}
+
+              <button className="btn btn-success btn-block btn-md mt-4">
+                Next challenge
+              </button>
+            </>
           )}
         </div>
       </TabWrapper>

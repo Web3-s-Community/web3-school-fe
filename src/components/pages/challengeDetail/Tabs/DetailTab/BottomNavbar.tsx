@@ -1,16 +1,21 @@
 import Link from "next/link";
 import { PropsWithChildren } from "react";
-interface Props {}
+interface Props {
+  prevSlug: string;
+  nextSlug: string;
+}
 
-const BottomNavbar: React.FC<PropsWithChildren<Props>> = ({}) => {
+const BottomNavbar: React.FC<PropsWithChildren<Props>> = ({
+  prevSlug,
+  nextSlug,
+}) => {
   return (
     <>
-      {" "}
       <div className="w-full border-t-2 border-[color:var(--border-color)]">
         <div className="flex flex-row justify-center py-1">
           <Link
             className="tab flex flex-row items-center"
-            href="/challenges/solidity-value-types"
+            href={`/challenges/${prevSlug}`}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -33,7 +38,7 @@ const BottomNavbar: React.FC<PropsWithChildren<Props>> = ({}) => {
           <div className="mx-2 text-gray-400"> | </div>
           <Link
             className="tab flex flex-row items-center"
-            href="/challenges/solidity-state-variables"
+            href={`/challenges/${nextSlug}`}
           >
             <span>next</span>
             <svg

@@ -10,7 +10,7 @@ import TaskList from "./Subtabs/TaskList";
 import Test from "./Subtabs/Test";
 import Solution from "./Subtabs/Solution";
 interface Props {
-  data: IChallengeDetail;
+  data: IChallengeDetail & { prevSlug: string; nextSlug: string };
   isFullScreen: boolean;
   onClickFullScreen: () => void;
   onClickOutFullScreen: () => void;
@@ -117,7 +117,7 @@ const DetailTab: React.FC<PropsWithChildren<Props>> = ({
         />
         {currentTab === "Test" && <Test test={data.test} />}
         {currentTab === "Solution" && <Solution solution={data.solution} />}
-        <BottomNavbar />
+        <BottomNavbar prevSlug={data.prevSlug} nextSlug={data.nextSlug} />
       </TabWrapper>
     </>
   );

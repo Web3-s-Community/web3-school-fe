@@ -11,14 +11,21 @@ interface Props {
 
 const ChallengeDetails: React.FC<Props> = async ({ params: { id } }) => {
   const response = await axios.get(
-    "https://congcu.org/web3-school/challenge.json?fbclid=IwAR1kVv5qGRKBXXSqZp1atmTJ-yIGzGHWXMHSJH1ln0PWbTG1Sc-YMbQHFcQ"
+    "https://congcu.org/web3-school/challenge.json"
+  );
+  const nextResponse = await axios.get(
+    "https://congcu.org/web3-school/next.json"
+  );
+  const prevResponse = await axios.get(
+    "https://congcu.org/web3-school/pre.json"
   );
   const data: IChallengeDetail = response.data;
-
+  const nextSlug = nextResponse.data.pageProps.data.challenge.slug;
+  const prevSlug = prevResponse.data.pageProps.data.challenge.slug;
   return (
     <>
       <div className={styles._slug__content}>
-        <ChallengeDetailLayout data={data} />
+        <ChallengeDetailLayout data={{ ...data, prevSlug, nextSlug }} />
       </div>
       <Footer />
     </>

@@ -1,4 +1,4 @@
-import { PropsWithChildren, useEffect } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 import axios from "axios";
 import { useSocketProvider } from "@/hooks/useSocketProvider";
 interface Props {
@@ -6,7 +6,13 @@ interface Props {
 }
 
 const CommandButtons: React.FC<PropsWithChildren<Props>> = ({ code }) => {
-  const { setIsLoading } = useSocketProvider();
+  const { setIsLoading, isLoading } = useSocketProvider();
+
+  const [isRunTask, setIsRunTask] = useState(false);
+
+  useEffect(() => {
+    if (!isLoading) setIsRunTask(false);
+  }, [isLoading]);
 
   const format = async () => {
     const response = await axios.post("http://localhost:12345/format", {
@@ -29,21 +35,23 @@ const CommandButtons: React.FC<PropsWithChildren<Props>> = ({ code }) => {
   };
 
   const run = async () => {
+    setIsRunTask(true);
+    setIsLoading(true);
     const response = await axios.post("http://localhost:12345/run", {
       language: localStorage.getItem("language"),
       task: "run",
       code,
     });
-    setIsLoading(true);
     localStorage.setItem("jobId", response.data.job.id);
   };
 
   return (
     <>
-      <div className="fixed bottom-10 right-2 z-50 flex w-full flex-row items-center space-x-2 px-4 py-3">
+      <div className="fixed bottom-10 right-2 z-50 flex w-fit flex-row items-center space-x-2 px-4 py-3">
         <button
           onClick={format}
           className="btn btn-light btn-xs ml-auto flex h-[30px] flex-row items-center"
+          disabled={isLoading}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -66,6 +74,7 @@ const CommandButtons: React.FC<PropsWithChildren<Props>> = ({ code }) => {
         <button
           onClick={compile}
           className="btn btn-light btn-xs ml-auto flex h-[30px] flex-row items-center"
+          disabled={isLoading}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -88,6 +97,7 @@ const CommandButtons: React.FC<PropsWithChildren<Props>> = ({ code }) => {
         <button
           onClick={run}
           className="btn btn-success btn-xs flex h-[30px] w-[72px] flex-row items-center"
+          disabled={isLoading}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -104,7 +114,8 @@ const CommandButtons: React.FC<PropsWithChildren<Props>> = ({ code }) => {
               strokeLinejoin="round"
               d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.348a1.125 1.125 0 010 1.971l-11.54 6.347a1.125 1.125 0 01-1.667-.985V5.653z"
             ></path>
-          </svg>{" "}
+          </svg>
+          Run
         </button>
       </div>
     </>

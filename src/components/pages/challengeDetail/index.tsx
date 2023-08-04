@@ -29,7 +29,7 @@ export interface IChallengeDetail {
 }
 
 interface Props {
-  data: IChallengeDetail;
+  data: IChallengeDetail & { nextSlug: string; prevSlug: string };
 }
 
 const initLeftRightSize = {

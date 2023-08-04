@@ -1,10 +1,11 @@
-import { PropsWithChildren, useState } from "react";
+import { PropsWithChildren, useState, useEffect } from "react";
 import TabWrapper from "../../TabLayout/TabWrapper";
 import TabHeader from "../../TabLayout/TabHeader";
 import { IChallengeDetail } from "../..";
 
 import dynamic from "next/dynamic";
 import CommandButtons from "../../CommandButtons";
+import { socket } from "@/socket";
 const AceEditor = dynamic(() => import("./AceEditor"), {
   ssr: false,
 });
@@ -13,7 +14,7 @@ interface Props {
   isFullScreen: boolean;
   onClickFullScreen: () => void;
   onClickOutFullScreen: () => void;
-  data: IChallengeDetail;
+  data: IChallengeDetail & { prevSlug: string; nextSlug: string };
 }
 
 const EditorTab: React.FC<PropsWithChildren<Props>> = ({
@@ -23,6 +24,22 @@ const EditorTab: React.FC<PropsWithChildren<Props>> = ({
   data,
 }) => {
   const [code, setCode] = useState("");
+
+  useEffect(() => {
+    socket.on("format", onFormat);
+    return () => {
+      socket.off("format", onFormat);
+    };
+  }, []);
+
+  const onFormat = (data: any[]) => {
+    const response = data[1];
+    if (response.jobId !== localStorage.getItem("jobId")) return;
+
+    if (response.status === "passed") {
+      setCode(response.output[0]);
+    }
+  };
 
   return (
     <>
