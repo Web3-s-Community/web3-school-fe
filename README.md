@@ -15,5 +15,5 @@ node mock-socket-server/socket-server.js
 
 - Run code FE
 ```
-
+npm run dev
 ```
