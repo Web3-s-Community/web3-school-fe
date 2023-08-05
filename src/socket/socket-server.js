@@ -28,7 +28,7 @@ app.post("/compile", (req, res) => {
         type: "rcee/completed",
         jobId: "123456",
         task: "compile",
-        status: "passed",
+        status: "failed",
         output: null,
         error: {
           type: "compiler/error",
