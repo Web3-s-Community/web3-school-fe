@@ -1,0 +1,53 @@
+.Logs_component {
+  height: 100%;
+  width: 100%;
+  overflow-y: scroll;
+  color: #e1e4e8;
+  font-size: 14px;
+  line-height: 20px;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  border: 3px solid transparent;
+  padding: 15px 15px 60px;
+}
+
+.Logs_terminalSuccess {
+  border: 3px solid #85e89d;
+}
+
+.Logs_terminalError {
+  border: 3px solid #f97583;
+}
+
+.Logs_line {
+  padding-left: 10px;
+  display: flex;
+  flex-direction: row;
+}
+
+.Logs_line:hover {
+  background-color: #2f363d;
+  color: #fafbfc;
+}
+
+.Logs_error {
+  color: #f97583;
+  font-weight: 600;
+}
+
+.Logs_errorBg,
+.Logs_errorBg:hover {
+  background-color: rgba(203, 36, 49, 0.15);
+}
+
+.Logs_errorBg:hover {
+  color: #e1e4e8;
+}
+
+.Logs_passed {
+  color: #85e89d;
+}
+
+.Logs_failed {
+  color: #f97583;
+}
