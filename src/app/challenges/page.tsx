@@ -5,11 +5,10 @@ import ChallengeList from "@/components/pages/challenges/ChallengeList";
 import Footer from "@/components/pages/challenges/Footer";
 import axios from "axios";
 import { IChallengeItem } from "@/components/pages/challenges/ChallengeList/ChallengeItem";
+import { BASE_API } from "@/constants";
 
 const ChallengePage: React.FC = async ({}) => {
-  const response = await axios.get(
-    "https://congcu.org/web3-school/challenge_list.json?fbclid=IwAR3tDMay05SodYH_c-eGGB-qma7sUGkoUFRJb9qKzpNrcUQbqaT03lbYJE8"
-  );
+  const response = await axios.get(`${BASE_API}/challenge_list.json`);
   const data: IChallengeItem[] = response.data;
   const completedCount = data.filter((e) => e.code?.status === "passed").length;
 
