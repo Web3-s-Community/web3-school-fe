@@ -17,6 +17,7 @@ const AceEditor: React.FC<PropsWithChildren<Props>> = ({ value, onChange }) => {
         onChange={onChange}
         mode="javascript"
         fontSize={14}
+        setOptions={{ useWorker: false }}
       />
     </>
   );
