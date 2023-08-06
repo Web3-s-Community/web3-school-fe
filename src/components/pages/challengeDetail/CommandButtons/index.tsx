@@ -16,22 +16,22 @@ const CommandButtons: React.FC<PropsWithChildren<Props>> = ({ code }) => {
   }, [isLoading]);
 
   const format = async () => {
+    setIsLoading(true);
     const response = await axios.post(`${BASE_API}/format.php`, {
       language: localStorage.getItem("language"),
       task: "format",
       code,
     });
-    setIsLoading(true);
     localStorage.setItem("jobId", response.data.job.id);
   };
 
   const compile = async () => {
+    setIsLoading(true);
     const response = await axios.post(`${BASE_API}/compile.php`, {
       language: localStorage.getItem("language"),
       task: "compile",
       code,
     });
-    setIsLoading(true);
     localStorage.setItem("jobId", response.data.job.id);
   };
 
