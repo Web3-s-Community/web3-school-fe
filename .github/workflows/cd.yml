@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Node.js CD
+name: web3-school-fe CD
 
 # Controls when the action will run.
 on:
@@ -29,3 +29,4 @@ jobs:
             git pull origin master
             git status
             npm install --only=prod
+            pm2 restart web3-school-fe
