@@ -30,6 +30,7 @@
     "socket-test": "file:mock-socket-server",
     "socket.io-client": "^4.7.2",
     "tailwindcss": "3.3.3",
-    "typescript": "5.1.6"
+    "typescript": "5.1.6",
+    "webpack-node-externals": "^3.0.0"
   }
 }

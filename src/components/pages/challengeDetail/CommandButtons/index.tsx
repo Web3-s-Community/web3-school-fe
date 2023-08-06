@@ -1,6 +1,7 @@
 import { PropsWithChildren, useEffect, useState } from "react";
 import axios from "axios";
 import { useSocketProvider } from "@/hooks/useSocketProvider";
+import { BASE_API } from "@/constants";
 interface Props {
   code: string;
 }
@@ -15,29 +16,29 @@ const CommandButtons: React.FC<PropsWithChildren<Props>> = ({ code }) => {
   }, [isLoading]);
 
   const format = async () => {
-    const response = await axios.post("http://localhost:12345/format", {
+    setIsLoading(true);
+    const response = await axios.post(`${BASE_API}/format.php`, {
       language: localStorage.getItem("language"),
       task: "format",
       code,
     });
-    setIsLoading(true);
     localStorage.setItem("jobId", response.data.job.id);
   };
 
   const compile = async () => {
-    const response = await axios.post("http://localhost:12345/compile", {
+    setIsLoading(true);
+    const response = await axios.post(`${BASE_API}/compile.php`, {
       language: localStorage.getItem("language"),
       task: "compile",
       code,
     });
-    setIsLoading(true);
     localStorage.setItem("jobId", response.data.job.id);
   };
 
   const run = async () => {
     setIsRunTask(true);
     setIsLoading(true);
-    const response = await axios.post("http://localhost:12345/run", {
+    const response = await axios.post(`${BASE_API}/run.php`, {
       language: localStorage.getItem("language"),
       task: "run",
       code,

@@ -1,5 +1,5 @@
 import Navbar from "@/components/common/Navbar";
-import "react-toastify/dist/ReactToastify.css";
+// import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
 
 import type { Metadata } from "next";
