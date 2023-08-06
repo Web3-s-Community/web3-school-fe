@@ -10,15 +10,9 @@ interface Props {
 }
 
 const ChallengeDetails: React.FC<Props> = async ({ params: { id } }) => {
-  const response = await axios.get(
-    "https://congcu.org/web3-school/challenge.json"
-  );
-  const nextResponse = await axios.get(
-    "https://congcu.org/web3-school/next.json"
-  );
-  const prevResponse = await axios.get(
-    "https://congcu.org/web3-school/pre.json"
-  );
+  const response = await axios.get(process.env.URL_CHALLENGE_DETAIL as string);
+  const nextResponse = await axios.get(process.env.URL_NEXT_SLUG as string);
+  const prevResponse = await axios.get(process.env.URL_PREV_SLUG as string);
   const data: IChallengeDetail = response.data;
   const nextSlug = nextResponse.data.pageProps.data.challenge.slug;
   const prevSlug = prevResponse.data.pageProps.data.challenge.slug;

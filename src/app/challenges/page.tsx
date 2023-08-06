@@ -7,9 +7,7 @@ import axios from "axios";
 import { IChallengeItem } from "@/components/pages/challenges/ChallengeList/ChallengeItem";
 
 const ChallengePage: React.FC = async ({}) => {
-  const response = await axios.get(
-    "https://congcu.org/web3-school/challenge_list.json?fbclid=IwAR3tDMay05SodYH_c-eGGB-qma7sUGkoUFRJb9qKzpNrcUQbqaT03lbYJE8"
-  );
+  const response = await axios.get(process.env.URL_CHALLENGE_LIST as string);
   const data: IChallengeItem[] = response.data;
   const completedCount = data.filter((e) => e.code?.status === "passed").length;
 

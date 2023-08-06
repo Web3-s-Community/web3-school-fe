@@ -15,21 +15,27 @@ const CommandButtons: React.FC<PropsWithChildren<Props>> = ({ code }) => {
   }, [isLoading]);
 
   const format = async () => {
-    const response = await axios.post("http://localhost:12345/format", {
-      language: localStorage.getItem("language"),
-      task: "format",
-      code,
-    });
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL_API}/format`,
+      {
+        language: localStorage.getItem("language"),
+        task: "format",
+        code,
+      }
+    );
     setIsLoading(true);
     localStorage.setItem("jobId", response.data.job.id);
   };
 
   const compile = async () => {
-    const response = await axios.post("http://localhost:12345/compile", {
-      language: localStorage.getItem("language"),
-      task: "compile",
-      code,
-    });
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL_API}/compile`,
+      {
+        language: localStorage.getItem("language"),
+        task: "compile",
+        code,
+      }
+    );
     setIsLoading(true);
     localStorage.setItem("jobId", response.data.job.id);
   };
@@ -37,11 +43,14 @@ const CommandButtons: React.FC<PropsWithChildren<Props>> = ({ code }) => {
   const run = async () => {
     setIsRunTask(true);
     setIsLoading(true);
-    const response = await axios.post("http://localhost:12345/run", {
-      language: localStorage.getItem("language"),
-      task: "run",
-      code,
-    });
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_BASE_URL_API}/run`,
+      {
+        language: localStorage.getItem("language"),
+        task: "run",
+        code,
+      }
+    );
     localStorage.setItem("jobId", response.data.job.id);
   };
 
