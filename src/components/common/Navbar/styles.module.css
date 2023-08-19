@@ -1,0 +1,12 @@
+.link {
+  padding: 10px 13px;
+  color: #fff;
+  font-weight: 600;
+}
+.linkActive {
+  background-color: #5865F2;
+  border-radius: 5px;
+  padding: 10px 13px;
+  color: #fff;
+  font-weight: 600;
+}

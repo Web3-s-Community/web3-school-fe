@@ -13,8 +13,8 @@ const Footer: React.FC<PropsWithChildren<Props>> = ({}) => {
         </div>
         <div className="p-2 text-center">
           <span className="pr-2">© 2023 Copyright</span>
-          <Link href="https://www.smartcontract.engineer/">
-            Smart Contract Engineer
+          <Link href="https://web3school.fun">
+            Web3School.fun
           </Link>
         </div>
       </footer>

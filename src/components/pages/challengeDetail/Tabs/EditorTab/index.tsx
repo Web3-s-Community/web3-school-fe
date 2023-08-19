@@ -130,9 +130,9 @@ const EditorTab: React.FC<PropsWithChildren<Props>> = ({
           )}
         </TabHeader>
         <AceEditor
-          value={code}
+          value={data.code?.code}
           onChange={(value) => {
-            setCode(value);
+            // setCode(value);
           }}
         />
       </TabWrapper>

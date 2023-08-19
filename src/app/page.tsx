@@ -1,3 +1,13 @@
+import ChallengePage from "./challenges/page";
+import Head from "next/head";
+
 export default function Home() {
-  return <h1>Home Page</h1>;
+  return (
+      <>
+        <Head>
+          <link rel="icon" href="/svgs/logo2.svg" />
+        </Head>
+          <ChallengePage />
+      </>
+  );
 }

@@ -8,7 +8,7 @@ import { IChallengeItem } from "@/components/pages/challenges/ChallengeList/Chal
 import { BASE_API } from "@/constants";
 
 const ChallengePage: React.FC = async ({}) => {
-  const response = await axios.get(`${BASE_API}/challenge_list.json`);
+  const response = await axios.get(`${BASE_API}/challenges`);
   const data: IChallengeItem[] = response.data;
   const completedCount = data.filter((e) => e.code?.status === "passed").length;
 
