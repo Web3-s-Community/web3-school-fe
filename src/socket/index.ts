@@ -1,3 +1,5 @@
 import { SOCKET_URL } from "@/constants";
 import { io } from "socket.io-client";
-export const socket = io(SOCKET_URL);
+
+console.log(`Socket url got: ${SOCKET_URL}`)
+export const socket = io("wss://socket.web3school.fun/ws");

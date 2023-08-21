@@ -1,33 +1,53 @@
 import { PropsWithChildren, useEffect, useState } from "react";
 import axios from "axios";
 import { useSocketProvider } from "@/hooks/useSocketProvider";
-import { BASE_API } from "@/constants";
+import {BASE_API, COMPILE_API} from "@/constants";
 interface Props {
   code: string;
 }
 
 const CommandButtons: React.FC<PropsWithChildren<Props>> = ({ code }) => {
   const { setIsLoading, isLoading } = useSocketProvider();
+  const [errorMsg, setErrorMsg] = useState("");
+  const [errorType, setErrorType] = useState("");
+  const [succeedMsg, setSucceedMsg] = useState([]);
+  const [succeedType, setSucceedType] = useState("");
 
   const [isRunTask, setIsRunTask] = useState(false);
 
   useEffect(() => {
     if (!isLoading) setIsRunTask(false);
-  }, [isLoading]);
+  }, [isLoading, errorMsg, errorType, succeedMsg, succeedType]);
+
+  const onGetError = (info: any) => {
+    // let err = info;
+    setErrorMsg(info);
+  };
+
+  const onGetSucceed = (info: any) => {
+    setSucceedMsg(info);
+  };
+
+  const reset = () => {
+    setErrorMsg("");
+    setErrorType("");
+    setSucceedMsg([]);
+    setSucceedType("");
+  };
 
   const format = async () => {
     setIsLoading(true);
-    const response = await axios.post(`${BASE_API}/format.php`, {
+    const response = await axios.post(`${COMPILE_API}/format`, {
       language: localStorage.getItem("language"),
       task: "format",
       code,
     });
-    localStorage.setItem("jobId", response.data.job.id);
+    // localStorage.setItem("jobId", response.data.job.id);
   };
 
   const compile = async () => {
     setIsLoading(true);
-    const response = await axios.post(`${BASE_API}/compile.php`, {
+    const response = await axios.post(`${COMPILE_API}/compile.php`, {
       language: localStorage.getItem("language"),
       task: "compile",
       code,
@@ -38,12 +58,26 @@ const CommandButtons: React.FC<PropsWithChildren<Props>> = ({ code }) => {
   const run = async () => {
     setIsRunTask(true);
     setIsLoading(true);
-    const response = await axios.post(`${BASE_API}/run.php`, {
+    const response = await axios.post(`${COMPILE_API}/execute-code`, {
       language: localStorage.getItem("language"),
       task: "run",
-      code,
+      "code_id": "sol-002",
+      code: code,
+      "uuid": "user1"
     });
-    localStorage.setItem("jobId", response.data.job.id);
+    // localStorage.setItem("jobId", response.data.job.id);
+
+    const resData = response.data;
+    console.log(resData);
+    setIsLoading(false);
+    reset();
+    if (resData.status === "failed") {
+      setErrorType("compile");
+      onGetError(resData.output);
+    } else if (resData.status === "passed") {
+      onGetSucceed("nice");
+      setSucceedType("format");
+    }
   };
 
   return (

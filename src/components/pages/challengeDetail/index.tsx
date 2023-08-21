@@ -23,9 +23,10 @@ export interface IChallengeDetail {
   starter: string;
   tasks: string[];
   hints: string[];
-  code: { code: string; status: string } | null;
+  code: { code: string; status: string };
   solution: string;
   test: string;
+  raw_code: string;
 }
 
 interface Props {
