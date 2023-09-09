@@ -1,7 +1,7 @@
 import { PropsWithChildren, useEffect, useState } from "react";
 import axios from "axios";
 import { useSocketProvider } from "@/hooks/useSocketProvider";
-import { BASE_API } from "@/constants";
+import { BASE_API2 } from "@/constants";
 interface Props {
   code: string;
 }
@@ -10,6 +10,11 @@ const CommandButtons: React.FC<PropsWithChildren<Props>> = ({ code }) => {
   const { setIsLoading, isLoading } = useSocketProvider();
 
   const [isRunTask, setIsRunTask] = useState(false);
+  const [succeedMsg, setSucceedMsg] = useState([]);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [errorType, setErrorType] = useState("");
+  const [succeedType, setSucceedType] = useState("");
+
 
   useEffect(() => {
     if (!isLoading) setIsRunTask(false);
@@ -17,7 +22,7 @@ const CommandButtons: React.FC<PropsWithChildren<Props>> = ({ code }) => {
 
   const format = async () => {
     setIsLoading(true);
-    const response = await axios.post(`${BASE_API}/format.php`, {
+    const response = await axios.post(`${BASE_API2}/format`, {
       language: localStorage.getItem("language"),
       task: "format",
       code,
@@ -27,7 +32,7 @@ const CommandButtons: React.FC<PropsWithChildren<Props>> = ({ code }) => {
 
   const compile = async () => {
     setIsLoading(true);
-    const response = await axios.post(`${BASE_API}/compile.php`, {
+    const response = await axios.post(`${BASE_API2}/compile`, {
       language: localStorage.getItem("language"),
       task: "compile",
       code,
@@ -38,12 +43,29 @@ const CommandButtons: React.FC<PropsWithChildren<Props>> = ({ code }) => {
   const run = async () => {
     setIsRunTask(true);
     setIsLoading(true);
-    const response = await axios.post(`${BASE_API}/run.php`, {
-      language: localStorage.getItem("language"),
-      task: "run",
-      code,
+    const response = await axios.post(`http://localhost:8080/api/v1/execute-code`, {
+      "code": code,
+      "uuid": "user1",
+      "code_id": "sol-001"
     });
-    localStorage.setItem("jobId", response.data.job.id);
+
+    setIsRunTask(false);
+    setIsLoading(false);
+
+    console.log(response);
+
+    if (response.data.status === "failed") {
+      console.log('RUn here');
+      setErrorType("compile");
+      setErrorMsg(response.data.output);
+    } else { // @ts-ignore
+      if (response.status === "passed") {
+            // @ts-ignore
+        setSucceedMsg("compiled");
+            setSucceedType(response.data.output.split('\n'));
+          }
+    }
+
   };
 
   return (

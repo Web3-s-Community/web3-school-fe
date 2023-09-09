@@ -23,7 +23,7 @@ const EditorTab: React.FC<PropsWithChildren<Props>> = ({
   onClickOutFullScreen,
   data,
 }) => {
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState("// SPDX-License-Identifier: MIT\npragma solidity ^0.8.17;\n\ncontract HelloWorld {\n    string public greet = \"Hellosdd World\";\n}");
 
   useEffect(() => {
     socket.on("format", onFormat);

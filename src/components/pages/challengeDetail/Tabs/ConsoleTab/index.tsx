@@ -15,17 +15,17 @@ const ConsoleTab: React.FC<PropsWithChildren<Props>> = ({}) => {
   const [succeedMsg, setSucceedMsg] = useState([]);
   const [succeedType, setSucceedType] = useState("");
 
-  useEffect(() => {
-    socket.on("format", onFormat);
-    socket.on("compile", onCompile);
-    socket.on("run", onRun);
-
-    return () => {
-      socket.off("format", onFormat);
-      socket.off("compile", onCompile);
-      socket.off("run", onRun);
-    };
-  }, []);
+  // useEffect(() => {
+  //   socket.on("format", onFormat);
+  //   socket.on("compile", onCompile);
+  //   socket.on("run", onRun);
+  //
+  //   return () => {
+  //     socket.off("format", onFormat);
+  //     socket.off("compile", onCompile);
+  //     socket.off("run", onRun);
+  //   };
+  // }, []);
 
   const onGetError = (info: any) => {
     let err = info.errors.map((error: any) => error.message).join("");
@@ -101,6 +101,11 @@ const ConsoleTab: React.FC<PropsWithChildren<Props>> = ({}) => {
 
   return (
     <>
+      <h1>errorMsg: {errorMsg}</h1>
+      <h1>errorType: {errorType}</h1>
+      <h1>succeedMsg: {succeedMsg}</h1>
+      <h1>succeedType: {succeedType}</h1>
+
       <TabWrapper style={{ height: "100%" }}>
         <TabHeader style={{ height: "20px" }}></TabHeader>
         <div
